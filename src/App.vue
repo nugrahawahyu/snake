@@ -3,7 +3,9 @@
     <header class="container">
       <div class="content">
         <div>
-          <i class="fas fa-pizza-slice" style="color: #f44336;"></i>
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="#f44336" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M2.2575 4.5C3.9225 2.655 6.3225 1.5 9 1.5C11.6775 1.5 14.085 2.6625 15.7425 4.5L9 16.5L2.2575 4.5ZM4.1325 4.77L9 13.44L13.8675 4.77C12.51 3.6375 10.785 3 9 3C7.215 3 5.49 3.6375 4.1325 4.77ZM6.75 4.125C6.1275 4.125 5.625 4.6275 5.625 5.25C5.625 5.8725 6.1275 6.375 6.75 6.375C7.3725 6.375 7.875 5.8725 7.875 5.25C7.875 4.6275 7.365 4.125 6.75 4.125ZM9 10.875C8.3775 10.875 7.875 10.3725 7.875 9.75C7.875 9.1275 8.385 8.625 9 8.625C9.615 8.625 10.125 9.1275 10.125 9.75C10.125 10.3725 9.615 10.875 9 10.875Z" fill="#f44336" fill-opacity="0.54"/>
+          </svg>
           <span style="margin-left: 8px;">{{ score }}</span>
         </div>
         <div>
@@ -315,6 +317,11 @@ export default Vue.extend({
 <style lang="scss" scoped>
 header {
   background-color: #ddd;
+}
+
+svg, span {
+  vertical-align: middle;
+  display: inline-block;
 }
 
 .container {
