@@ -103,7 +103,7 @@ ul {
   height: 100%;
   flex-direction: column;
   background-color: #eee;
-  border: solid 1px #bbb;
+  border: solid 1px #add8e6;
 
   &.active {
     background-color: green;
