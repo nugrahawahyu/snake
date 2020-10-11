@@ -23,7 +23,7 @@
           </div>
         </div>
         <div class="modal-action">
-          <button @click="restart">Got it</button>
+          <button ref="startButton" @click="restart">Got it</button>
         </div>
       </div>
     </Modal>
@@ -39,7 +39,7 @@
           Highest score: {{ highestScore }}
         </div>
         <div class="modal-action">
-          <button @click="restart">Play again</button>
+          <button ref="restartButton" @click="restart">Play again</button>
         </div>
       </div>
     </Modal>
@@ -98,6 +98,9 @@ export default Vue.extend({
       snake: undefined as Snake | undefined
     }
   },
+  mounted () {
+    this.$refs.startButton.focus()
+  },
   methods: {
     checkIfIsValidHeadPosition (head: BodyFragment): Boolean {
       const activeCoordinates: Coordinate[] = this.activeCoordinates
@@ -118,6 +121,9 @@ export default Vue.extend({
       clearInterval(this.interval)
       document.onkeydown = null;
       this.showGameOverModal = true
+      this.$nextTick(() => {
+        this.$refs.restartButton.focus()
+      })
     },
     restart () {
       const board = this.$refs.board as unknown as BoardInterface
