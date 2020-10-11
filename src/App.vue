@@ -186,11 +186,9 @@ export default Vue.extend({
         const oldTail = snake.getTail()
         const [head, tail] = snake.tick()
         if (this.checkIfIsValidHeadPosition(head)) {
-          try {
+          if (oldTail.coordinate.positionX >= 0 && oldTail.coordinate.positionY >= 0 && oldTail.coordinate.positionX < BOARD_WIDTH && oldTail.coordinate.positionY < BOARD_HEIGHT) {
             board.setTileRole(oldTail.coordinate, Role.empty)
-          } catch (e) {
-            // eslint-disable-next-line no-console
-            console.error(e)
+          } else {
             // eslint-disable-next-line no-console
             console.log('TODO: fix this error')
             // eslint-disable-next-line no-console
