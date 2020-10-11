@@ -93,11 +93,11 @@ export default Vue.extend({
     endGame () {
       // eslint-disable-next-line no-console
       console.log('Game over')
-      const highestScore = parseInt(localStorage.getItem(HIGHEST_SCORE_CACHE_KEY)) || 0;
+      const highestScore = parseInt(localStorage.getItem(HIGHEST_SCORE_CACHE_KEY) as string) || 0;
       const score = this.score
       if (score > highestScore) {
         this.highestScore = score
-        localStorage.setItem(HIGHEST_SCORE_CACHE_KEY, score)
+        localStorage.setItem(HIGHEST_SCORE_CACHE_KEY, String(score))
       }
       clearInterval(this.interval)
       document.onkeydown = null;
@@ -115,7 +115,7 @@ export default Vue.extend({
         snake.unFreezeSetDirection()
       })
       this.score = 0
-      this.highestScore = parseInt(localStorage.getItem(HIGHEST_SCORE_CACHE_KEY)) || 0;
+      this.highestScore = parseInt(localStorage.getItem(HIGHEST_SCORE_CACHE_KEY) as string) || 0;
       this.showModal = false
       this.snake = snake
       this.foodCoordinates = []
