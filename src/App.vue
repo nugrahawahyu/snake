@@ -99,7 +99,8 @@ export default Vue.extend({
     }
   },
   mounted () {
-    this.$refs.startButton.focus()
+    const startButton = this.$refs.startButton as HTMLElement
+    startButton.focus()
   },
   methods: {
     checkIfIsValidHeadPosition (head: BodyFragment): Boolean {
@@ -122,7 +123,8 @@ export default Vue.extend({
       document.onkeydown = null;
       this.showGameOverModal = true
       this.$nextTick(() => {
-        this.$refs.restartButton.focus()
+        const restartButton = this.$refs.restartButton as HTMLElement
+        restartButton.focus()
       })
     },
     restart () {
@@ -210,10 +212,12 @@ export default Vue.extend({
       }
     },
     appLog () {
+      if (process.env.DEBUG) {
       // eslint-disable-next-line no-console
-      console.log(JSON.stringify({
-        foodPositions: this.foodCoordinates.map(c => `(${c.positionX},${c.positionY})`)
-      }))
+        console.log(JSON.stringify({
+          foodPositions: this.foodCoordinates.map(c => `(${c.positionX},${c.positionY})`)
+        }))
+      }
     }
   }
 })
