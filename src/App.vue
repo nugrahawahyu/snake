@@ -1,6 +1,14 @@
 <template>
-  <main>
-    <Board ref="board" @eat="eat" />
+  <div>
+    <header>
+      <div class="content">
+        <i class="fas fa-pizza-slice" style="color: red;"></i>
+        <span style="margin-left: 8px;">{{ score }}</span>
+      </div>
+    </header>
+    <main>
+      <Board ref="board" @eat="eat" />
+    </main>
     <Modal v-if="showModal">
       <div class="modal-content">
         <div class="text-center modal-item">
@@ -17,7 +25,7 @@
         </div>
       </div>
     </Modal>
-  </main>
+  </div>
 </template>
 
 <script lang="ts">
@@ -30,6 +38,7 @@ import Modal from './components/Modal.vue'
 
 const BOARD_WIDTH = 17
 const BOARD_HEIGHT = 17
+const HIGHEST_SCORE_CACHE_KEY = 'highestScore'
 
 interface BoardInterface {
   setTileRole(coordinate: Coordinate, role: Role): void;
@@ -84,6 +93,12 @@ export default Vue.extend({
     endGame () {
       // eslint-disable-next-line no-console
       console.log('Game over')
+      const highestScore = parseInt(localStorage.getItem(HIGHEST_SCORE_CACHE_KEY)) || 0;
+      const score = this.score
+      if (score > highestScore) {
+        this.highestScore = score
+        localStorage.setItem(HIGHEST_SCORE_CACHE_KEY, score)
+      }
       clearInterval(this.interval)
       document.onkeydown = null;
       this.showModal = true
@@ -100,6 +115,7 @@ export default Vue.extend({
         snake.unFreezeSetDirection()
       })
       this.score = 0
+      this.highestScore = parseInt(localStorage.getItem(HIGHEST_SCORE_CACHE_KEY)) || 0;
       this.showModal = false
       this.snake = snake
       this.foodCoordinates = []
@@ -172,6 +188,21 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+header {
+  margin: 0 auto;
+  width: calc(100vw - 16px);
+  background-color: #ddd;
+
+  @media screen and (min-width: 800px){
+    margin: 0 auto;
+    max-width: calc(17 * 25px);
+  }
+
+  .content {
+    padding: 16px 8px;
+  }
+}
+
 .text-center {
   text-align: center;
 }
