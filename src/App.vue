@@ -9,7 +9,23 @@
     <main>
       <Board ref="board" @eat="eat" />
     </main>
-    <Modal v-if="showModal">
+    <Modal v-if="showNewGameModal">
+      <div class="modal-content">
+        <div class="text-center modal-item">
+          <h2>Welcome</h2>
+        </div>
+        <div class="modal-item">
+          <div>
+            Goal: Eat as much as you can ( <i class="fas fa-square" aria-hidden="true" style="color: red; background-color: red;"></i> )
+            Nagivation: Arrow keys
+          </div>
+        </div>
+        <div class="modal-action">
+          <button @click="restart">Got it</button>
+        </div>
+      </div>
+    </Modal>
+    <Modal v-if="showGameOverModal">
       <div class="modal-content">
         <div class="text-center modal-item">
           <h2>Game Over</h2>
@@ -72,15 +88,13 @@ export default Vue.extend({
     return {
       score: 0,
       highestScore: 0,
-      showModal: false,
+      showGameOverModal: false,
+      showNewGameModal: true,
       interval: undefined as number | undefined,
       activeCoordinates: [] as Coordinate[],
       foodCoordinates: [] as Coordinate[],
       snake: undefined as Snake | undefined
     }
-  },
-  mounted () {
-    this.restart()
   },
   methods: {
     checkIfIsValidHeadPosition (head: BodyFragment): Boolean {
@@ -101,7 +115,7 @@ export default Vue.extend({
       }
       clearInterval(this.interval)
       document.onkeydown = null;
-      this.showModal = true
+      this.showGameOverModal = true
     },
     restart () {
       const board = this.$refs.board as unknown as BoardInterface
@@ -114,9 +128,10 @@ export default Vue.extend({
       snake.nextTick(() => {
         snake.unFreezeSetDirection()
       })
+      this.showNewGameModal = false
       this.score = 0
       this.highestScore = parseInt(localStorage.getItem(HIGHEST_SCORE_CACHE_KEY) as string) || 0;
-      this.showModal = false
+      this.showGameOverModal = false
       this.snake = snake
       this.foodCoordinates = []
       this.activeCoordinates = snake.getBodyFragmentPositions()
