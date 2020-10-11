@@ -1,7 +1,7 @@
 <template>
   <div class="board">
     <ul class="flex" v-for="(row, y) of board" :key="y">
-      <li class="flex-item" v-for="(tile, x) of row" :key="x" :class="{ active: tile.role === Role.active, food: tile.role === Role.food }">
+      <li class="flex-item" v-for="(tile, x) of row" :key="x" :class="{ head: tile.role === Role.head, tail: tile.role === Role.tail, active: tile.role === Role.active, food: tile.role === Role.food }">
       </li>
     </ul>
   </div>
@@ -14,7 +14,9 @@ import { Coordinate } from '../modules/coordinate'
 export enum Role {
   active,
   food,
-  empty
+  empty,
+  head,
+  tail
 }
 
 class Tile {
@@ -105,12 +107,20 @@ ul {
   background-color: #eee;
   border: solid 1px #add8e6;
 
+  &.head {
+    background-color: #1b5e20;
+  }
+
+  &.tail {
+    background-color: #4caf50;
+  }
+
   &.active {
-    background-color: green;
+    background-color: #388e3c;
   }
 
   &.food {
-    background-color: red;
+    background-color: #f44336;
   }
 }
 </style>

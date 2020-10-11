@@ -2,7 +2,7 @@
   <div>
     <header class="container">
       <div class="content">
-        <i class="fas fa-pizza-slice" style="color: red;"></i>
+        <i class="fas fa-pizza-slice" style="color: #f44336;"></i>
         <span style="margin-left: 8px;">{{ score }}</span>
       </div>
     </header>
@@ -26,7 +26,7 @@
         </div>
         <div class="modal-item">
           <div>
-            Goal: Eat as much as you can ( food = <i class="fas fa-square" aria-hidden="true" style="color: red;"></i> )
+            Goal: Eat as much as you can ( food = <i class="fas fa-square" aria-hidden="true" style="color: #f44336;"></i> )
           </div>
           <div>
             Nagivation: Arrow keys
@@ -183,6 +183,7 @@ export default Vue.extend({
       board.emptyAllTiles()
       this.interval = setInterval(() => {
         this.appLog()
+        const oldHead = snake.getHead()
         const oldTail = snake.getTail()
         const [head, tail] = snake.tick()
         if (this.checkIfIsValidHeadPosition(head)) {
@@ -194,7 +195,9 @@ export default Vue.extend({
             // eslint-disable-next-line no-console
             console.log({ errorContext: { oldTail, head, tail }})
           }
-          board.setTileRole(head.coordinate, Role.active)
+          board.setTileRole(oldHead.coordinate, Role.active)
+          board.setTileRole(tail.coordinate, Role.tail)
+          board.setTileRole(head.coordinate, Role.head)
           this.activeCoordinates = snake.getBodyFragmentPositions()
         } else {
           this.endGame()
