@@ -2,8 +2,13 @@
   <div>
     <header class="container">
       <div class="content">
-        <i class="fas fa-pizza-slice" style="color: #f44336;"></i>
-        <span style="margin-left: 8px;">{{ score }}</span>
+        <div>
+          <i class="fas fa-pizza-slice" style="color: #f44336;"></i>
+          <span style="margin-left: 8px;">{{ score }}</span>
+        </div>
+        <div>
+          <span style="color: #333">{{ config.text }}</span>
+        </div>
       </div>
     </header>
     <main>
@@ -26,6 +31,14 @@
         </div>
         <div class="modal-item">
           <div>
+            Difficulty: 
+            <select name="size" v-model="config">
+              <option v-for="(config, i) in configs" v-bind:value="config" :key="i" >
+                {{ config.text }}
+              </option>
+            </select>
+          </div>
+          <div>
             Goal: Eat as much as you can ( food = <i class="fas fa-square" aria-hidden="true" style="color: #f44336;"></i> )
           </div>
           <div>
@@ -40,16 +53,19 @@
     <Modal v-if="showGameOverModal">
       <div class="modal-content">
         <div class="text-center modal-item">
-          <h2>Game Over</h2>
+          <span>Game Over</span>
         </div>
         <div class="text-center modal-item">
-          Score: {{ score }}
+          <h2>Score: {{ score }}</h2>
         </div>
         <div class="text-center modal-item">
           Highest score: {{ highestScore }}
         </div>
+        <div class="text-center modal-item">
+          Difficulty: {{ config.text }}
+        </div>
         <div class="modal-action">
-          <button ref="restartButton" @click="restart">Play again</button>
+          <button ref="restartButton" @click="openWelcomeScreen">Play again</button>
         </div>
       </div>
     </Modal>
@@ -81,6 +97,16 @@ interface BoardInterface {
   emptyAllTiles(): void;
 }
 
+class Config {
+  public text: string
+  public interval: number
+
+  constructor (text: string, interval: number) {
+    this.text = text
+    this.interval = interval
+  }
+}
+
 function checkKeyFactory (snake: Snake) {
   return function checkKey(e: KeyboardEvent) {
     if (e.keyCode === 38) {
@@ -105,7 +131,14 @@ export default Vue.extend({
     VirtualController
   },
   data () {
+    const configs = [
+      new Config('Easy', 200),
+      new Config('Medium', 100),
+      new Config('Hard', 50),
+    ]
     return {
+      configs,
+      config: configs[1],
       Platform,
       score: 0,
       isGameOver: false,
@@ -125,10 +158,17 @@ export default Vue.extend({
     },
   },
   mounted () {
-    const startButton = this.$refs.startButton as HTMLElement
-    startButton.focus()
+    this.openWelcomeScreen()
   },
   methods: {
+    openWelcomeScreen () {
+      this.showGameOverModal = false
+      this.showNewGameModal = true
+      this.$nextTick(() => {
+        const startButton = this.$refs.startButton as HTMLElement
+        startButton.focus()
+      })
+    },
     checkIfIsValidHeadPosition (head: BodyFragment): Boolean {
       const activeCoordinates: Coordinate[] = this.activeCoordinates
       const { coordinate } = head
@@ -202,7 +242,7 @@ export default Vue.extend({
         } else {
           this.endGame()
         }
-      }, 100)
+      }, this.config.interval)
 
       const foodCoordinate = this.spawnFoods()
       document.addEventListener('keydown', checkKey)
@@ -276,6 +316,8 @@ header {
 }
 
 .content {
+  display: flex;
+  justify-content: space-between;
   padding: 16px 8px;
 }
 
