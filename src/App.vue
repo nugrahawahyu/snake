@@ -152,7 +152,16 @@ export default Vue.extend({
         const oldTail = snake.getTail()
         const [head, tail] = snake.tick()
         if (this.checkIfIsValidHeadPosition(head)) {
-          board.setTileRole(oldTail.coordinate, Role.empty)
+          try {
+            board.setTileRole(oldTail.coordinate, Role.empty)
+          } catch (e) {
+            // eslint-disable-next-line no-console
+            console.error(e)
+            // eslint-disable-next-line no-console
+            console.log('TODO: fix this error')
+            // eslint-disable-next-line no-console
+            console.log({ errorContext: { oldTail, head, tail }})
+          }
           board.setTileRole(head.coordinate, Role.active)
           this.activeCoordinates = snake.getBodyFragmentPositions()
         } else {
