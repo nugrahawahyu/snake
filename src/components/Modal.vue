@@ -25,7 +25,6 @@ export default Vue.extend({
 .body {
   z-index: 2;
   margin: 24px;
-  padding: 16px;
   color:#000;
   background-color: #fff;
   opacity: 100%;

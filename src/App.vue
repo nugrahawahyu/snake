@@ -30,19 +30,31 @@
           <h2>Welcome</h2>
         </div>
         <div class="modal-item">
-          <div>
-            Difficulty: 
+          <div class="info-container">
+            <div>
+              Difficulty: 
+            </div>
             <select name="size" v-model="config">
               <option v-for="(config, i) in configs" v-bind:value="config" :key="i" >
                 {{ config.text }}
               </option>
             </select>
           </div>
-          <div>
-            Goal: Eat as much as you can ( food = <i class="fas fa-square" aria-hidden="true" style="color: #f44336;"></i> )
+          <div class="info-container">
+            <div>
+              Goal:
+            </div>
+            <div>
+              Eat as much as you can
+            </div>
           </div>
-          <div>
-            Nagivation: Arrow keys
+          <div class="info-container">
+            <div>
+              Nagivation:
+            </div>
+            <div>
+              Arrow keys
+            </div>
           </div>
         </div>
         <div class="modal-action">
@@ -330,7 +342,16 @@ header {
   text-align: center;
 }
 
+.modal-content {
+  padding: 16px;
+}
+
 .modal-item {
   flex-direction: row;
+}
+
+.info-container {
+  display: flex;
+  justify-content: space-between;
 }
 </style>
