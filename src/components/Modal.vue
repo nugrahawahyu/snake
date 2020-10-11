@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="fixed overlay" />
-    <div class="fixed body">
+    <div class="fixed body container">
       <slot />
     </div>
   </div>
@@ -36,4 +36,15 @@ export default Vue.extend({
   background-color: #000;
   opacity: 50%;
 }
+
+.container {
+  margin: 0 auto;
+  width: calc(100vw - 16px);
+
+  @media screen and (min-width: 800px){
+    margin: 0 auto;
+    max-width: calc(17 * 25px);
+  }
+}
+
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <header>
+    <header class="container">
       <div class="content">
         <i class="fas fa-pizza-slice" style="color: red;"></i>
         <span style="margin-left: 8px;">{{ score }}</span>
@@ -16,7 +16,9 @@
         </div>
         <div class="modal-item">
           <div>
-            Goal: Eat as much as you can ( <i class="fas fa-square" aria-hidden="true" style="color: red; background-color: red;"></i> )
+            Goal: Eat as much as you can ( food = <i class="fas fa-square" aria-hidden="true" style="color: red;"></i> )
+          </div>
+          <div>
             Nagivation: Arrow keys
           </div>
         </div>
@@ -204,18 +206,21 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 header {
+  background-color: #ddd;
+}
+
+.container {
   margin: 0 auto;
   width: calc(100vw - 16px);
-  background-color: #ddd;
 
   @media screen and (min-width: 800px){
     margin: 0 auto;
     max-width: calc(17 * 25px);
   }
+}
 
-  .content {
-    padding: 16px 8px;
-  }
+.content {
+  padding: 16px 8px;
 }
 
 .text-center {
