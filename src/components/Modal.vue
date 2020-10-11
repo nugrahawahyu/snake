@@ -27,13 +27,13 @@ export default Vue.extend({
   margin: 24px;
   color:#000;
   background-color: #fff;
-  opacity: 100%;
+  opacity: 1;
 }
 .overlay {
   z-index: 1;
   top: 0;
   background-color: #000;
-  opacity: 50%;
+  opacity: 0.5;
 }
 
 .container {
