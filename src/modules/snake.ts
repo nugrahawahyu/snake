@@ -94,6 +94,7 @@ export class Snake {
       default:
         break;
     }
+    this.freezeSetDirection()
     this.direction = direction
   }
 

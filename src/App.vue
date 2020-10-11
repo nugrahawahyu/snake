@@ -8,6 +8,16 @@
     </header>
     <main>
       <Board ref="board" @eat="eat" />
+      <div style="position: fixed; bottom: 0; left: 0; right: 0; margin-bottom: 24px;">
+        <VirtualController
+          v-if="platform === Platform.mobile"
+          :disabled="isGameOver"
+          @up="checkVirtualKey"
+          @down="checkVirtualKey"
+          @left="checkVirtualKey"
+          @right="checkVirtualKey"
+        />
+      </div>
     </main>
     <Modal v-if="showNewGameModal">
       <div class="modal-content">
@@ -52,11 +62,19 @@ import { BodyFragment, Snake } from './modules/snake'
 import { Direction } from './modules/direction'
 import { Coordinate } from './modules/coordinate'
 import Board, { Role } from './components/Board.vue'
+import VirtualController from './components/VirtualController.vue'
 import Modal from './components/Modal.vue'
+import MobileDetect from 'mobile-detect'
 
+const md = new MobileDetect(window.navigator.userAgent);
 const BOARD_WIDTH = 17
 const BOARD_HEIGHT = 17
 const HIGHEST_SCORE_CACHE_KEY = 'highestScore'
+
+enum Platform {
+  desktop,
+  mobile
+}
 
 interface BoardInterface {
   setTileRole(coordinate: Coordinate, role: Role): void;
@@ -77,18 +95,21 @@ function checkKeyFactory (snake: Snake) {
     else if (e.keyCode === 39) {
       snake.setDirection(Direction.Right)
     }
-    snake.freezeSetDirection()
   }
 }
 
 export default Vue.extend({
   components: {
     Board,
-    Modal
+    Modal,
+    VirtualController
   },
   data () {
     return {
+      Platform,
       score: 0,
+      isGameOver: false,
+      checkKey: undefined as Function | undefined,
       highestScore: 0,
       showGameOverModal: false,
       showNewGameModal: true,
@@ -97,6 +118,11 @@ export default Vue.extend({
       foodCoordinates: [] as Coordinate[],
       snake: undefined as Snake | undefined
     }
+  },
+  computed: {
+    platform () {
+      return md.mobile() ? Platform.mobile : Platform.desktop
+    },
   },
   mounted () {
     const startButton = this.$refs.startButton as HTMLElement
@@ -120,12 +146,16 @@ export default Vue.extend({
         localStorage.setItem(HIGHEST_SCORE_CACHE_KEY, String(score))
       }
       clearInterval(this.interval)
-      document.onkeydown = null;
-      this.showGameOverModal = true
-      this.$nextTick(() => {
-        const restartButton = this.$refs.restartButton as HTMLElement
-        restartButton.focus()
-      })
+      // @ts-ignore
+      document.removeEventListener('keydown', this.checkKey);
+      this.isGameOver = true
+      setTimeout(() => {
+        this.showGameOverModal = true
+        this.$nextTick(() => {
+          const restartButton = this.$refs.restartButton as HTMLElement
+          restartButton.focus()
+        })
+      }, 500)
     },
     restart () {
       const board = this.$refs.board as unknown as BoardInterface
@@ -138,6 +168,8 @@ export default Vue.extend({
       snake.nextTick(() => {
         snake.unFreezeSetDirection()
       })
+      this.isGameOver = false
+      this.checkKey = checkKey
       this.showNewGameModal = false
       this.score = 0
       this.highestScore = parseInt(localStorage.getItem(HIGHEST_SCORE_CACHE_KEY) as string) || 0;
@@ -172,7 +204,7 @@ export default Vue.extend({
       }, 100)
 
       const foodCoordinate = this.spawnFoods()
-      document.onkeydown = checkKey;
+      document.addEventListener('keydown', checkKey)
     },
     spawnFoods (count = 1): Coordinate {
       const board = this.$refs.board as unknown as BoardInterface
@@ -210,6 +242,10 @@ export default Vue.extend({
           this.spawnFoods(1)
         }
       }
+    },
+    checkVirtualKey (direction: Direction): void {
+      const snake = this.snake as Snake
+      snake.setDirection(direction)
     },
     appLog () {
       if (process.env.DEBUG) {
