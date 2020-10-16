@@ -127,15 +127,19 @@ class Config {
 function checkKeyFactory (snake: Snake) {
   return function checkKey(e: KeyboardEvent) {
     if (e.keyCode === 38) {
+      e.preventDefault()
       snake.setDirection(Direction.UP)
     }
     else if (e.keyCode === 40) {
+      e.preventDefault()
       snake.setDirection(Direction.DOWN)
     }
     else if (e.keyCode === 37) {
+      e.preventDefault()
       snake.setDirection(Direction.LEFT)
     }
     else if (e.keyCode === 39) {
+      e.preventDefault()
       snake.setDirection(Direction.RIGHT)
     }
   }
