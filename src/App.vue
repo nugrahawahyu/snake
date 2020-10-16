@@ -157,9 +157,9 @@ export default Vue.extend({
   },
   data () {
     const configs = [
-      new Config('Easy', 200),
-      new Config('Medium', 100),
-      new Config('Hard', 50),
+      new Config('Easy', 300),
+      new Config('Medium', 150),
+      new Config('Hard', 100),
     ]
     return {
       configs,
