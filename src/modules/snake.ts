@@ -31,19 +31,19 @@ export class Snake {
     let newHeadPositionX: number = 0
     let newHeadPositionY: number = 0
     switch (direction) {
-      case Direction.Up:
+      case Direction.UP:
         newHeadPositionX = oldHead.coordinate.positionX
         newHeadPositionY = oldHead.coordinate.positionY - 1
         break;
-      case Direction.Down:
+      case Direction.DOWN:
         newHeadPositionX = oldHead.coordinate.positionX
         newHeadPositionY = oldHead.coordinate.positionY + 1
         break;
-      case Direction.Right:
+      case Direction.RIGHT:
         newHeadPositionX = oldHead.coordinate.positionX + 1
         newHeadPositionY = oldHead.coordinate.positionY
         break;
-      case Direction.Left:
+      case Direction.LEFT:
         newHeadPositionX = oldHead.coordinate.positionX - 1
         newHeadPositionY = oldHead.coordinate.positionY
         break;
@@ -79,17 +79,17 @@ export class Snake {
     const currentDirection = this.direction
     if (!this.isSetDirectionAllowed) return
     switch (direction) {
-      case Direction.Up:
-        if (currentDirection === Direction.Down) return
+      case Direction.UP:
+        if (currentDirection === Direction.DOWN) return
         break;
-      case Direction.Down:
-        if (currentDirection === Direction.Up) return
+      case Direction.DOWN:
+        if (currentDirection === Direction.UP) return
         break;
-      case Direction.Right:
-        if (currentDirection === Direction.Left) return
+      case Direction.RIGHT:
+        if (currentDirection === Direction.LEFT) return
         break;
-      case Direction.Left:
-        if (currentDirection === Direction.Right) return
+      case Direction.LEFT:
+        if (currentDirection === Direction.RIGHT) return
         break;
       default:
         break;

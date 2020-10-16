@@ -19,10 +19,7 @@
         <VirtualController
           v-if="platform === Platform.mobile"
           :disabled="isGameOver"
-          @up="checkVirtualKey"
-          @down="checkVirtualKey"
-          @left="checkVirtualKey"
-          @right="checkVirtualKey"
+          @action="checkVirtualKey"
         />
       </div>
     </main>
@@ -122,16 +119,16 @@ class Config {
 function checkKeyFactory (snake: Snake) {
   return function checkKey(e: KeyboardEvent) {
     if (e.keyCode === 38) {
-      snake.setDirection(Direction.Up)
+      snake.setDirection(Direction.UP)
     }
     else if (e.keyCode === 40) {
-      snake.setDirection(Direction.Down)
+      snake.setDirection(Direction.DOWN)
     }
     else if (e.keyCode === 37) {
-      snake.setDirection(Direction.Left)
+      snake.setDirection(Direction.LEFT)
     }
     else if (e.keyCode === 39) {
-      snake.setDirection(Direction.Right)
+      snake.setDirection(Direction.RIGHT)
     }
   }
 }
@@ -222,7 +219,7 @@ export default Vue.extend({
       const snake = new Snake({ 
         initialSnakeHeadPositionX: 7,
         initialSnakeHeadPositionY: 7,
-        direction: Direction.Right
+        direction: Direction.RIGHT
       })
       const checkKey = checkKeyFactory(snake)
       snake.nextTick(() => {
