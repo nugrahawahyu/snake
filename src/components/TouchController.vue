@@ -13,12 +13,19 @@ const defaultListener = () => {
 }
 
 export default Vue.extend({
+  props: {
+    disabled: {
+      type: Boolean,
+      default: false
+    }
+  },
   data () {
     return {
       touchController: new WasdTouchController({
         totalDirection: 4,
         element: document.documentElement,
         handler: (direction: Direction) => {
+          if (this.disabled) return
           switch (direction) {
             case Direction.LEFT:
               this.$emit('action', Direction.LEFT)

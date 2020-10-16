@@ -16,9 +16,9 @@
     <main>
       <Board ref="board" @eat="eat" />
       <div style="position: fixed; bottom: 0; left: 0; right: 0; margin-bottom: 24px;">
-        <VirtualController
+        <TouchController
           v-if="platform === Platform.mobile"
-          :disabled="isGameOver"
+          :disabled="isGameOver || showNewGameModal"
           @action="checkVirtualKey"
         />
       </div>
@@ -52,7 +52,15 @@
               Nagivation:
             </div>
             <div>
-              Arrow keys
+              <span v-if="platform === Platform.desktop">Arrow keys</span>
+              <div class="navigation-icon" v-else>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M17.01 5L21 9L17.01 13V10H10V8H17.01V5ZM3 15L6.99 11V14H14V16H6.99V19L3 15Z" fill="black" fill-opacity="0.54"/>
+                </svg>
+                <svg class="hand" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M18.2638 12.94L15.0238 11.32C16.3138 10.32 17.1438 8.76001 17.1438 7C17.1438 3.96997 14.6738 1.5 11.6438 1.5C8.61389 1.5 6.1438 3.96997 6.1438 7C6.1438 9.13 7.36389 10.98 9.1438 11.89V15.15L7.30383 14.76L7.20386 14.74C7.10388 14.72 7.00391 14.71 6.88391 14.71C6.35388 14.71 5.85388 14.92 5.47388 15.3L4.07385 16.72L9.16382 21.81C9.59387 22.25 10.1938 22.5 10.8138 22.5H17.1139C18.0939 22.5 18.9238 21.8 19.0839 20.83L19.8839 16.12C20.1039 14.82 19.4539 13.54 18.2638 12.94ZM17.9138 15.79L17.1138 20.5H10.8138C10.7238 20.5 10.6438 20.46 10.5739 20.4L6.8938 16.72L11.1438 17.61V7C11.1438 6.71997 11.3638 6.5 11.6438 6.5C11.9238 6.5 12.1438 6.71997 12.1438 7V13H13.9038L17.3638 14.73C17.7638 14.93 17.9838 15.36 17.9138 15.79ZM11.6438 3.5C9.71375 3.5 8.1438 5.07001 8.1438 7C8.1438 7.95001 8.5238 8.81 9.1438 9.44V7C9.1438 5.62 10.2638 4.5 11.6438 4.5C13.0238 4.5 14.1438 5.62 14.1438 7V9.44C14.7638 8.81 15.1438 7.95001 15.1438 7C15.1438 5.07001 13.5739 3.5 11.6438 3.5Z" fill="black" fill-opacity="0.54"/>
+                </svg>
+              </div>
             </div>
           </div>
         </div>
@@ -89,7 +97,7 @@ import { BodyFragment, Snake } from './modules/snake'
 import { Direction } from './modules/direction'
 import { Coordinate } from './modules/coordinate'
 import Board, { Role } from './components/Board.vue'
-import VirtualController from './components/VirtualController.vue'
+import TouchController from './components/TouchController.vue'
 import Modal from './components/Modal.vue'
 
 const BOARD_WIDTH = 17
@@ -145,7 +153,7 @@ export default Vue.extend({
   components: {
     Board,
     Modal,
-    VirtualController
+    TouchController
   },
   data () {
     const configs = [
@@ -317,6 +325,13 @@ export default Vue.extend({
 })
 </script>
 
+<style>
+main {
+  touch-action: none;
+  min-height: 100vh;
+}
+</style>
+
 <style lang="scss" scoped>
 header {
   background-color: #ddd;
@@ -363,5 +378,15 @@ svg, span {
 .info-container {
   display: flex;
   justify-content: space-between;
+}
+
+.navigation-icon {
+  position: relative;
+
+  .hand {
+    position: absolute;
+    left: 8px;
+    top: 12px;
+  }
 }
 </style>
