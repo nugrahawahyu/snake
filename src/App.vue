@@ -338,6 +338,10 @@ export default Vue.extend({
 </script>
 
 <style>
+body {
+  overflow: hidden;
+}
+
 main {
   touch-action: none;
   min-height: 100vh;
