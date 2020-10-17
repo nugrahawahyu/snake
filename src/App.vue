@@ -31,10 +31,10 @@
         <div class="modal-item">
           <div class="info-container">
             <div class="info-label">
-              Difficulty
+              <label for="difficulty-select">Difficulty</label>
             </div>
             <div class="info-content">
-              <select name="size" v-model="config">
+              <select id="difficulty-select" name="size" v-model="config">
                 <option v-for="(config, i) in configs" v-bind:value="config" :key="i" >
                   {{ config.text }}
                 </option>
