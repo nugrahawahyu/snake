@@ -14,17 +14,21 @@ export class TouchController {
   protected handler: Function
   protected touches: Touches
   protected listener: EventListener
+  protected touchTolerant: number
 
   public constructor ({
     element,
-    handler
+    handler,
+    touchTolerant = 4
   }: {
     element: Element,
     handler: Function,
+    touchTolerant?: number
   }) {
     this.touches = new Touches()
     this.element = element
     this.handler = handler
+    this.touchTolerant = touchTolerant
     this.listener = (evt: Event) => this.defaultListener(evt as TouchEvent)
     this.register()
   }
@@ -59,6 +63,9 @@ export class TouchController {
             this.touches.touchstart.y = touch.pageY;
             break;
           case 'touchmove':
+            if (Math.abs(this.touches.touchstart.x - touch.pageX) < this.touchTolerant && Math.abs(this.touches.touchstart.y - touch.pageY) < this.touchTolerant) {
+              return
+            }
             this.touches.touchmove.x = touch.pageX;
             this.touches.touchmove.y = touch.pageY;
             this.handler(this.calculateRad({
@@ -68,6 +75,8 @@ export class TouchController {
               x: this.touches.touchmove.x,
               y: this.touches.touchmove.y,
             }))
+            this.touches.touchstart.x = touch.pageX
+            this.touches.touchstart.y = touch.pageY
             break;
           case 'touchend':
             this.touches.touchend = true;
