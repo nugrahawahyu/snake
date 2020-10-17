@@ -102,7 +102,7 @@ import TouchController from './components/TouchController.vue'
 import Modal from './components/Modal.vue'
 const BOARD_WIDTH = 17
 const BOARD_HEIGHT = 17
-const HIGHEST_SCORE_CACHE_KEY = 'highestScore'
+const HIGHEST_SCORE_BASE_CACHE_KEY = 'highestScore'
 
 enum Platform {
   desktop,
@@ -185,6 +185,10 @@ export default Vue.extend({
     platform () {
       return isMobile ? Platform.mobile : Platform.desktop
     },
+    currentHighestScoreCacheKey () {
+      const config = this['config'] as unknown as Config
+      return `${HIGHEST_SCORE_BASE_CACHE_KEY}-${config.text}`
+    }
   },
   mounted () {
     this.openWelcomeScreen()
@@ -208,11 +212,11 @@ export default Vue.extend({
     endGame () {
       // eslint-disable-next-line no-console
       console.log('Game over')
-      const highestScore = parseInt(localStorage.getItem(HIGHEST_SCORE_CACHE_KEY) as string) || 0;
+      const highestScore = parseInt(localStorage.getItem(this.currentHighestScoreCacheKey) as string) || 0;
       const score = this.score
       if (score > highestScore) {
         this.highestScore = score
-        localStorage.setItem(HIGHEST_SCORE_CACHE_KEY, String(score))
+        localStorage.setItem(this.currentHighestScoreCacheKey, String(score))
       }
       if (this.interval) {
         this.interval.stop()
@@ -243,7 +247,7 @@ export default Vue.extend({
       this.checkKey = checkKey
       this.showNewGameModal = false
       this.score = 0
-      this.highestScore = parseInt(localStorage.getItem(HIGHEST_SCORE_CACHE_KEY) as string) || 0;
+      this.highestScore = parseInt(localStorage.getItem(this.currentHighestScoreCacheKey) as string) || 0;
       this.showGameOverModal = false
       this.snake = snake
       this.foodCoordinates = []
