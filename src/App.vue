@@ -93,13 +93,13 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { RequestAnimationFrameInterval } from '@/modules/request_animation_frame_interval'
 import { BodyFragment, Snake } from './modules/snake'
 import { Direction } from './modules/direction'
 import { Coordinate } from './modules/coordinate'
 import Board, { Role } from './components/Board.vue'
 import TouchController from './components/TouchController.vue'
 import Modal from './components/Modal.vue'
-
 const BOARD_WIDTH = 17
 const BOARD_HEIGHT = 17
 const HIGHEST_SCORE_CACHE_KEY = 'highestScore'
@@ -175,7 +175,7 @@ export default Vue.extend({
       highestScore: 0,
       showGameOverModal: false,
       showNewGameModal: true,
-      interval: undefined as number | undefined,
+      interval: undefined as RequestAnimationFrameInterval | undefined,
       activeCoordinates: [] as Coordinate[],
       foodCoordinates: [] as Coordinate[],
       snake: undefined as Snake | undefined
@@ -214,7 +214,9 @@ export default Vue.extend({
         this.highestScore = score
         localStorage.setItem(HIGHEST_SCORE_CACHE_KEY, String(score))
       }
-      clearInterval(this.interval)
+      if (this.interval) {
+        this.interval.stop()
+      }
       // @ts-ignore
       document.removeEventListener('keydown', this.checkKey);
       this.isGameOver = true
@@ -250,7 +252,7 @@ export default Vue.extend({
         board.setTileRole(coordinate, Role.active)
       })
       board.emptyAllTiles()
-      this.interval = setInterval(() => {
+      this.interval = new RequestAnimationFrameInterval(() => {
         this.appLog()
         const oldHead = snake.getHead()
         const oldTail = snake.getTail()
