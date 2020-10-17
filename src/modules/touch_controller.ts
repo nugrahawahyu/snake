@@ -19,7 +19,7 @@ export class TouchController {
   public constructor ({
     element,
     handler,
-    touchTolerant = 8
+    touchTolerant = 16
   }: {
     element: Element,
     handler: Function,
