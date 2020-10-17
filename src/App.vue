@@ -30,28 +30,30 @@
         </div>
         <div class="modal-item">
           <div class="info-container">
-            <div>
-              Difficulty: 
+            <div class="info-label">
+              Difficulty
             </div>
-            <select name="size" v-model="config">
-              <option v-for="(config, i) in configs" v-bind:value="config" :key="i" >
-                {{ config.text }}
-              </option>
-            </select>
+            <div class="info-content">
+              <select name="size" v-model="config">
+                <option v-for="(config, i) in configs" v-bind:value="config" :key="i" >
+                  {{ config.text }}
+                </option>
+              </select>
+            </div>
           </div>
           <div class="info-container">
-            <div>
-              Goal:
+            <div class="info-label">
+              Goal
             </div>
-            <div>
+            <div class="info-content">
               Eat as much as you can
             </div>
           </div>
           <div class="info-container">
-            <div>
-              Nagivation:
+            <div class="info-label">
+              Nagivation
             </div>
-            <div>
+            <div class="info-content">
               <span v-if="platform === Platform.desktop">Arrow keys</span>
               <div class="navigation-icon" v-else>
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -387,11 +389,22 @@ svg, span {
 
 .info-container {
   display: flex;
-  justify-content: space-between;
+
+  .info-label {
+    width: 85px;
+  }
+
+  .info-content {
+    &::before {
+      content: ':';
+      margin-right: 10px;
+    }
+  }
 }
 
 .navigation-icon {
   position: relative;
+  display: inline-block;
 
   .hand {
     position: absolute;
