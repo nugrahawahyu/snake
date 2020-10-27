@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div v-if="platform === Platform.desktop || showNewGameModal || showGameOverModal">
+      <GithubLink href="https://github.com/nugrahawahyu/snake" />
+    </div>
     <header class="container">
       <div class="content">
         <div>
@@ -8,7 +11,7 @@
           </svg>
           <span style="margin-left: 8px;">{{ score }}</span>
         </div>
-        <div>
+        <div v-if="!showNewGameModal && !showGameOverModal">
           <span style="color: #333">{{ config.text }}</span>
         </div>
       </div>
@@ -102,6 +105,8 @@ import { Coordinate } from './modules/coordinate'
 import Board, { Role } from './components/Board.vue'
 import TouchController from './components/TouchController.vue'
 import Modal from './components/Modal.vue'
+import GithubLink from './components/GithubLink.vue'
+
 const BOARD_WIDTH = 17
 const BOARD_HEIGHT = 17
 const HIGHEST_SCORE_BASE_CACHE_KEY = 'highestScore'
@@ -159,7 +164,8 @@ export default Vue.extend({
   components: {
     Board,
     Modal,
-    TouchController
+    TouchController,
+    GithubLink
   },
   data () {
     const configs = [
